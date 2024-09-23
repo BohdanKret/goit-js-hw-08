@@ -71,23 +71,29 @@ const imgArray = images.map((img) => createImgBox(img)).join("");
 const gallery = document.querySelector(".gallery");
 gallery.insertAdjacentHTML("beforeEnd", imgArray);
 
-// console.log(gallery);
-
 // add event to pictures
 gallery.addEventListener("click", onImgClick);
 
 function onImgClick(event) {
-    if (event.target.nodeName !== "IMG") {
-      return;
-    }
+  event.preventDefault();
 
-    console.log(event.target.dataset.source);
+  if (event.target.nodeName !== "IMG") {
+    return;
+  }
+
+  console.log(event.target.dataset.source);
+
+  const originalImg = basicLightbox.create(`
+    <img src="${event.target.dataset.source}">
+  `);
+
+  originalImg.show();
 }
 
 function createImgBox(imgcard) {
   return `
     <li class="gallery-item">
-        <a class="gallery-link" href="large-image.jpg">
+        <a class="gallery-link" href="${imgcard.original}">
             <img
             class="gallery-image"
             src="${imgcard.preview}"
@@ -96,4 +102,4 @@ function createImgBox(imgcard) {
             />
         </a>
     </li>`;
-};
+}
